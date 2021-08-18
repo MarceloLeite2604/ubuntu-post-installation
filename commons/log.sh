@@ -1,9 +1,8 @@
 #!/bin/bash
 
 # Include guard
-if [ -z "$LOG_SH" ];
-then
-    LOG_SH=1;
+if [[ -z "$_LOG_SH" ]]; then
+    _LOG_SH=1;
 else
     return;
 fi;

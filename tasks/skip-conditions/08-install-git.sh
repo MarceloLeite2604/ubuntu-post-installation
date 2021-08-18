@@ -1,3 +1,5 @@
 #!/bin/bash
 
-sudo apt install git -y;
+source $(dirname $BASH_SOURCE)/../../commons/commons.sh
+
+check_apt_package_is_installed git && exit $SKIP;

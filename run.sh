@@ -24,6 +24,7 @@ save_properties() {
 }
 
 for execution_path in $EXECUTIONS_DIRECTORY*; do
+    clear_properties;
     save_properties $execution_path;
     file_name=$(load_property "file_name");
     execution_name=$(load_property "execution_name");
@@ -32,20 +33,20 @@ for execution_path in $EXECUTIONS_DIRECTORY*; do
     if check_skip_script_exists $file_name; then
         log_debug "Skip script \"$file_name\" will be executed.";
         $SKIP_CONDITIONS_DIRECTORY$file_name;
-        skip_execution=[[ $? -eq $SKIP ]];
+        check_result=$?;
+        skip=false; [[ $check_result -eq $SKIP ]] && skip=true;
     else
         log_debug "No skip script found for $execution_name.";
-        skip_execution=false;
+        skip=false;
     fi;
 
-    # if [[ ! $skip_condition ]]; then
-    #     log_debug "Execution \"$execution_name\" will be skipped.";
-    #     break;
-    # fi;
-    clear_properties;
-    exit 0;
+    if [[ ! $skip ]]; then
+        log_info "Execution \"$execution_name\" will be skipped.";
+        continue;
+    fi;
+
+    log_info "Execution \"$execution_name\" will be done.";
+    $EXECUTIONS_DIRECTORY$file_name;
 done;
-
-
 
 delete_stage;
