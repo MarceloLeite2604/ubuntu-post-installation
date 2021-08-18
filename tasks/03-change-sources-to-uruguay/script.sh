@@ -2,8 +2,6 @@
 
 source $(dirname $BASH_SOURCE)/../../commons/commons.sh
 
-SOURCES_FILE_PATH=/etc/apt/sources.list;
-
 backup_file $SOURCES_FILE_PATH;
 sed -i 's/br./uy./g' $SOURCES_FILE_PATH;
 

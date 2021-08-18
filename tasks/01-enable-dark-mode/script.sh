@@ -2,9 +2,6 @@
 
 source $(dirname $BASH_SOURCE)/../../commons/commons.sh
 
-CONFIGURATION_FILE_PATH=~/.config/gtk-4.0/settings.ini;
-CONFIGURATION_TEXT="gtk-application-prefer-dark-theme=1";
-
 create_file_if_does_not_exist $CONFIGURATION_FILE_PATH;
 
 cat >> $CONFIGURATION_FILE_PATH << EOF
