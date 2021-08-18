@@ -3,7 +3,7 @@
 # Include guard
 [ -n "$_FILE_SH" ] && return || readonly _FILE_SH=1;
 
-function create_file_if_does_not_exist() {
+create_file_if_does_not_exist() {
     local path=$1;
     local directory=$(dirname $1);
 
@@ -20,7 +20,7 @@ function create_file_if_does_not_exist() {
 
 }
 
-function create_directory_if_does_not_exist() {
+create_directory_if_does_not_exist() {
     local path=$1;
 
     if [[ -f $path ]]; then
@@ -36,7 +36,7 @@ function create_directory_if_does_not_exist() {
     return $SUCCESS;
 }
 
-function content_exists_on_file() {
+content_exists_on_file() {
     content=$1;
     file=$2;
 
@@ -49,7 +49,7 @@ function content_exists_on_file() {
     return;
 }
 
-function regex_matches_content_on_file() {
+regex_matches_content_on_file() {
     regex=$1;
     file=$2;
 
@@ -62,7 +62,7 @@ function regex_matches_content_on_file() {
     return;
 }
 
-function backup_file() {
+backup_file() {
     file_path=$1;
     index=$2;
     

@@ -27,25 +27,25 @@ INFO_PREFIX="$GREEN_FOREGROUND[INFO ]:$RESET_LAYOUT";
 WARNING_PREFIX="$YELLOW_FOREGROUND[WARN ]:$RESET_LAYOUT";
 ERROR_PREFIX="$RED_FOREGROUND[ERROR]:$RESET_LAYOUT";
 
-function log_debug() {
+log_debug() {
     local message=$1;
 
     echo "$DEBUG_PREFIX $message";
 }
 
-function log_info() {
+log_info() {
     local message=$1;
 
     echo "$INFO_PREFIX $message";
 }
 
-function log_warn() {
+log_warn() {
     local message=$1;
 
     echo "$WARNING_PREFIX $message";
 }
 
-function log_error() {
+log_error() {
     local message=$1;
 
     echo "$ERROR_PREFIX $message" >&2;
