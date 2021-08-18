@@ -1,5 +1,8 @@
 #!/bin/bash
 
+WORKING_DIRECTORY=$(dirname $BASH_SOURCE)/;
 
-touch ~/.config/gtk-4.0/settings.ini
- 
+source ${WORKING_DIRECTORY}/commons/commons.sh;
+
+create_stage;
+delete_stage;

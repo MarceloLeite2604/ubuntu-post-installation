@@ -10,9 +10,11 @@ fi;
 
 DIRECTORY=$(dirname $BASH_SOURCE)/;
 
+source ${DIRECTORY}stage.sh;
 source ${DIRECTORY}constants.sh;
 source ${DIRECTORY}log.sh;
 source ${DIRECTORY}file.sh;
+source ${DIRECTORY}properties.sh;
 
 unset DIRECTORY;
 

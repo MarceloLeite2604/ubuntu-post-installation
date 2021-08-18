@@ -1,8 +1,7 @@
 #!/bin/bash
 
 # Include guard
-if [ -z "$CONSTANTS_SH" ];
-then
+if [[ -z "$CONSTANTS_SH" ]]; then
     CONSTANTS_SH=1;
 else
     return;
@@ -11,4 +10,4 @@ fi;
 # Exit/return codes
 SUCCESS=0
 FAILURE=255
-SKIPPED=254
+SKIP=254
