@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Include guard
-if [[ -z "$PROPERTIES_SH" ]]; then
-    PROPERTIES_SH=1;
+if [[ -z "$_PROPERTIES_SH" ]]; then
+    _PROPERTIES_SH=1;
 else
     return;
 fi;
@@ -12,15 +12,14 @@ DIRECTORY=$(dirname $BASH_SOURCE)/;
 source ${DIRECTORY}log.sh
 source ${DIRECTORY}file.sh
 
-PROPERTIES_FILE_PATH=${STAGE_DIRECTORY_PATH}properties;
 TASK_PROPERTY_NAME="task";
 
 check_property_exists() {
     local name=$1;
 
-    local property_regex="^$name=.*\n";
+    local property_regex="^$name=.*";
 
-    grep $property_regex $PROPERTIES_FILE_PATH;
+    grep $property_regex $PROPERTIES_FILE_PATH >> /dev/null;
     return;
 }
 
@@ -32,7 +31,7 @@ save_property() {
         delete_property $name;
     fi;
 
-    echo $name=$value >> $PROPERTIES_FILES_PATH;
+    echo "$name=$value" >> $PROPERTIES_FILE_PATH;
 }
 
 load_property() {
@@ -45,10 +44,14 @@ load_property() {
         exit $FAILURE;
     fi;
 
-    echo $(sed -n "s/$name=\(\S\+\)/\1/p" $PROPERTIES_FILES_PATH);
+    echo $(sed -n "s/$name=\(\S\+\)/\1/p" $PROPERTIES_FILE_PATH);
 }
 
 delete_property() {
     local name=$1;
-    sed -i "s/^$name=.*\n//" $PROPERTIES_FILES_PATH;
+    sed -i "/^$name=.*/d" $PROPERTIES_FILE_PATH;
+}
+
+clear_properties() {
+    truncate -s 0 $PROPERTIES_FILE_PATH;
 }

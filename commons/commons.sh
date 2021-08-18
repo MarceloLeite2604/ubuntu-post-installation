@@ -1,9 +1,8 @@
 #!/bin/bash
 
 # Include guard
-if [ -z "$COMMONS_SH" ];
-then
-    COMMONS_SH=1;
+if [[ -z "$_COMMONS_SH" ]]; then
+    _COMMONS_SH=1;
 else
     return;
 fi;

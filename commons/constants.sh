@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Include guard
-if [[ -z "$CONSTANTS_SH" ]]; then
-    CONSTANTS_SH=1;
+if [[ -z "$_CONSTANTS_SH" ]]; then
+    _CONSTANTS_SH=1;
 else
     return;
 fi;

@@ -1,9 +1,8 @@
 #!/bin/bash
 
 # Include guard
-if [ -z "$FILE_SH" ];
-then
-    FILE_SH=1;
+if [[ -z "$_FILE_SH" ]]; then
+    _FILE_SH=1;
 else
     return;
 fi;

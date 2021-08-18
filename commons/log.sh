@@ -53,5 +53,5 @@ function log_warn() {
 function log_error() {
     local message=$1;
 
-    echo "$ERROR_PREFIX $message";
+    echo "$ERROR_PREFIX $message" >&2;
 }
