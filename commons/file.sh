@@ -1,11 +1,7 @@
 #!/bin/bash
 
 # Include guard
-if [[ -z "$_FILE_SH" ]]; then
-    _FILE_SH=1;
-else
-    return;
-fi;
+[ -n "$_FILE_SH" ] && return || readonly _FILE_SH=1;
 
 function create_file_if_does_not_exist() {
     local path=$1;

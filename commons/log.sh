@@ -1,11 +1,7 @@
 #!/bin/bash
 
 # Include guard
-if [[ -z "$_LOG_SH" ]]; then
-    _LOG_SH=1;
-else
-    return;
-fi;
+[ -n "$_LOG_SH" ] && return || readonly _LOG_SH=1;
 
 BLACK_FOREGROUND=`tput setaf 0`;
 RED_FOREGROUND=`tput setaf 1`;

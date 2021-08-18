@@ -1,11 +1,7 @@
 #!/bin/bash
 
 # Include guard
-if [[ -z "$_PROPERTIES_SH" ]]; then
-    _PROPERTIES_SH=1;
-else
-    return;
-fi;
+[ -n "$_PROPERTIES_SH" ] && return || readonly _PROPERTIES_SH=1;
 
 DIRECTORY=$(dirname $BASH_SOURCE)/;
 

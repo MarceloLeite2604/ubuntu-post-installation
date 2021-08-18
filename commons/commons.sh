@@ -1,11 +1,7 @@
 #!/bin/bash
 
 # Include guard
-if [[ -z "$_COMMONS_SH" ]]; then
-    _COMMONS_SH=1;
-else
-    return;
-fi;
+[ -n "$_COMMONS_SH" ] && return || readonly _COMMONS_SH=1;
 
 DIRECTORY=$(dirname $BASH_SOURCE)/;
 

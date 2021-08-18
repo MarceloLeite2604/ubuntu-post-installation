@@ -1,11 +1,7 @@
 #!/bin/bash
 
 # Include guard
-if [[ -z "$_CONSTANTS_SH" ]]; then
-    _CONSTANTS_SH=1;
-else
-    return;
-fi;
+[ -n "$_CONSTANTS_SH" ] && return || readonly _CONSTANTS_SH=1;
 
 # Exit/return codes
 SUCCESS=0
