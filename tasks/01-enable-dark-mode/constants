@@ -1,2 +1,0 @@
-CONFIGURATION_FILE_PATH=~/.config/gtk-4.0/settings.ini
-CONFIGURATION_TEXT="gtk-application-prefer-dark-theme=1"

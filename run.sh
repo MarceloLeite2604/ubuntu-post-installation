@@ -1,52 +1,70 @@
 #!/bin/bash
 
-WORKING_DIRECTORY=$(dirname $BASH_SOURCE)/;
-EXECUTIONS_DIRECTORY=$(dirname $BASH_SOURCE)/tasks/executions/;
-SKIP_CONDITIONS_DIRECTORY=$(dirname $BASH_SOURCE)/tasks/skip-conditions/;
+getopts "d" _DEBUG;
+[[ "$_DEBUG" == "d" ]] && _DEBUG=0 || _DEBUG=1;
+
+readonly WORKING_DIRECTORY=$(dirname $BASH_SOURCE)/;
 
 source $WORKING_DIRECTORY/commons/commons.sh;
 
-create_stage;
+if [[ "$(whoami)" != "root" ]]; then
+  log_error "This script must be executed as root."
+  log_error "Either log in as root or run this script with \"sudo\"."
+  exit $FAILURE;
+fi;
 
-check_skip_script_exists() {
-    local file_name=$1;
-    [[ -f $SKIP_CONDITIONS_DIRECTORY$file_name ]];
+load_task_properties() {
+  local readonly task=$1;
+  local readonly properties_file="$TASKS_DIRECTORY$task/$PROPERTIES_FILE_NAME";
+
+  if [[ -f "$properties_file" ]]; then
+  log_debug "Loading properties for task \"$task\".";
+    load_properties $properties_file;
+  fi;
+}
+
+unload_task_properties() {
+  local readonly task=$1;
+  local readonly properties_file="$TASKS_DIRECTORY$task/$PROPERTIES_FILE_NAME";
+
+  if [[ -f "$properties_file" ]]; then
+    unload_properties $properties_file;
+  fi;
+}
+
+check_skip_condition() {
+  local readonly task=$1;
+  local readonly skip_script="$TASKS_DIRECTORY$task/$SKIP_CONDITION_FILE_NAME";
+
+  if [[ -f "$skip_script" ]]; then
+    log_debug "Executing skip condition script for task \"$task\".";
+    $skip_script;
     return;
+  fi;
+
+  log_debug "No skip condition script found for task \"$task\".";
+  return $PROCEED;
 }
 
-save_properties() {
-    local execution_path=$1;
-    local file_name=${execution_path##*/};
-    local execution_name=${file_name%.*};
+for task_directory in $TASKS_DIRECTORY*; do
+    
+  task=${task_directory##*/};
+  log_debug "Analysing task \"$task\".";
 
-    save_property "file_name" $file_name;
-    save_property "execution_name" $execution_name;
-}
+  load_task_properties $task;
 
-for execution_path in $EXECUTIONS_DIRECTORY*; do
-    clear_properties;
-    save_properties $execution_path;
-    file_name=$(load_property "file_name");
-    execution_name=$(load_property "execution_name");
-    log_debug "Analysing execution \"$execution_name\".";
+  task_directory="$TASKS_DIRECTORY$task/";
+  
+  check_skip_condition $task;
+  skip=$?;
+  
+  if [[ $skip -eq $SKIP ]]; then
+    log_info "Task \"$task\" will be skipped.";
+    continue;
+  fi;
 
-    if check_skip_script_exists $file_name; then
-        log_debug "Skip script \"$file_name\" will be executed.";
-        $SKIP_CONDITIONS_DIRECTORY$file_name;
-        check_result=$?;
-        skip=false; [[ $check_result -eq $SKIP ]] && skip=true;
-    else
-        log_debug "No skip script found for $execution_name.";
-        skip=false;
-    fi;
+  log_info "Task \"$task\" will be executed.";
+  $task_directory$SCRIPT_FILE_NAME;
 
-    if [[ ! $skip ]]; then
-        log_info "Execution \"$execution_name\" will be skipped.";
-        continue;
-    fi;
-
-    log_info "Execution \"$execution_name\" will be done.";
-    $EXECUTIONS_DIRECTORY$file_name;
+  unload_task_properties $task;
 done;
-
-delete_stage;

@@ -2,4 +2,4 @@
 
 source $(dirname $BASH_SOURCE)/../../commons/commons.sh
 
-echo snap install --classic code;
+check_apt_package_is_installed unrar && exit $SKIP;

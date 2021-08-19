@@ -2,4 +2,4 @@
 
 source $(dirname $BASH_SOURCE)/../../commons/commons.sh
 
-echo sudo apt install vim -y;
+echo apt install vim -y;

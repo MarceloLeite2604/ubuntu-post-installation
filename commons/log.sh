@@ -30,7 +30,7 @@ ERROR_PREFIX="$RED_FOREGROUND[ERROR]:$RESET_LAYOUT";
 log_debug() {
     local message=$1;
 
-    echo "$DEBUG_PREFIX $message";
+    [[ $_DEBUG -eq 0 ]] && echo "$DEBUG_PREFIX $message";
 }
 
 log_info() {
