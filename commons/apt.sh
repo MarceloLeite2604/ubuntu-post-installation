@@ -6,7 +6,7 @@
 check_apt_package_is_installed() {
   local package_name=$1;
 
-  dpkg -l $package_name >> /dev/null;
+  dpkg -l $package_name | grep ^ii >> /dev/null;
   return;
 }
 
