@@ -20,4 +20,4 @@ then
 	exit 1;
 fi;
 
-echo apt install $package -y;
+apt install $package -y;

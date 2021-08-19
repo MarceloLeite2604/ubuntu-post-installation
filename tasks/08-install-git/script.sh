@@ -2,4 +2,4 @@
 
 source $(dirname $BASH_SOURCE)/../../commons/commons.sh
 
-echo apt install git -y;
+apt install git -y;
