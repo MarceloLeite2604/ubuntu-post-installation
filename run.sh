@@ -33,14 +33,18 @@ function _run_script() {
 
     _check_context || return 1;
 
+    _setUp;
+
     if [[ _verify -ne 0 ]];
     then
+        _tearDown;
         return 0;
     fi;
 
     echo "[$script] $_description";
     _execute;
     local _execution_result=$?;
+    _tearDown;
 
     if [[ $_execution_result -ne 0 ]];
     then
@@ -52,6 +56,31 @@ function _run_script() {
     return 0;
 }
 
-_run_script "$_scripts_root/dummy.sh";
-_result=$?;
-_add_history "$_scripts_root/dummy.sh" $_result;
+function _search_scripts() {
+    echo "$(find $_scripts_root -type f -regex ".*[0-9]+-[A-z0-9-]+\.sh" | sort | xargs echo)";
+}
+
+function run() {
+    for script in $(_search_scripts);
+    do
+        _run_script "$script";
+        _result=$?;
+        _add_history "$script" $_result;
+        if [[ _result -ne 0 ]];
+        then
+            >&2 echo "Cancelling execution.";
+            exit 1;
+        fi;
+        exit 1;
+    done;
+
+    echo "Execution completed.";
+}
+
+if [[ $(id -u) -ne 0 ]];
+then
+    >&2 echo "This script must be executed by \"root\" user.";
+    >&2 echo "Please chage to \"root\" or execute this script through \"sudo\" command.";
+    exit 1;
+fi;
+run;

@@ -44,14 +44,22 @@ function _retrieve_history() {
 
 function _clear_context() {
     unset $_description;
-    unset -f verify;
-    unset -f execute;
+    unset -f _setUp;
+    unset -f _verify;
+    unset -f _execute;
+    unset -f _tearDown;
 }
 
 function _check_context() {
     if [[ -z "$_description" ]];
     then
         >&2 echo "\"_description\" variable is not set.";
+        return 1;
+    fi;
+
+    if [[ $(type -t _setUp) != function ]];
+    then
+        >&2 echo "\"_setUp\" function is not set.";
         return 1;
     fi;
 
@@ -64,6 +72,12 @@ function _check_context() {
     if [[ $(type -t _execute) != function ]];
     then
         >&2 echo "\"_execute\" function is not set.";
+        return 1;
+    fi;
+
+    if [[ $(type -t _tearDown) != function ]];
+    then
+        >&2 echo "\"_tearDown\" function is not set.";
         return 1;
     fi;
 
@@ -81,4 +95,8 @@ function _load() {
 
     source $script;
     return 0;
+}
+
+function check_root() {
+    return [[ $(id -u) -eq 0 ]];
 }
