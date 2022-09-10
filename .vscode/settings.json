@@ -1,0 +1,8 @@
+{
+  "shellformat.useEditorConfig": true,
+  "editor.tabSize": 2,
+  "editor.detectIndentation": false,
+  "shellcheck.customArgs": [
+    "-x"
+  ]
+}
