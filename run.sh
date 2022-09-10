@@ -102,29 +102,33 @@ function _search_scripts() {
   find "$_scripts_root" -type f -regex ".*/[0-9]+-[A-z0-9-]+\.sh" | sort | xargs echo
 }
 
-function run() {
+function _run() {
   for script in $(_search_scripts); do
     _run_script "$script"
     _result=$?
     _add_history "$script" $_result
     if [[ _result -ne 0 ]]; then
       echo >&2 "Cancelling execution."
-      exit 1
+      return 1
     fi
   done
 
   echo "Execution completed."
+  return 0
 }
 
-run
+function _print_manual_procedures() {
+  local _manual_procedures_content;
+  _manual_procedures_content=$(_read_manual_procedures)
 
-_manual_procedures_content=$(_read_manual_procedures)
+  if [[ -n "$_manual_procedures_content" ]]; then
+    echo "Additional procedures that must be done manually.";
+    echo "$_manual_procedures_content"
+  fi;
+}
 
-if [[ -n "$_manual_procedures_content" ]]; then
-  echo "Additional procedures that must be done manually.";
-  echo "$_manual_procedures_content"
-fi;
-
+_run
+_print_manual_procedures
 
 if [[ $_debug -eq 0 ]]; then
   set +x
