@@ -66,7 +66,7 @@ function _run_script() {
 }
 
 function _search_scripts() {
-    echo "$(find $_scripts_root -type f -regex ".*[0-9]+-[A-z0-9-]+\.sh" | sort | xargs echo)";
+    echo "$(find $_scripts_root -type f -regex ".*/[0-9]+-[A-z0-9-]+\.sh" | sort | xargs echo)";
 }
 
 function run() {
