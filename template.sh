@@ -4,12 +4,12 @@
 _description="Dummy execution"
 
 # Define your constants and functions on this function.
-function _setUp() {
+function _set_up() {
   return 0
 }
 
 # Unset your constants and functions on this function.
-function _tearDown() {
+function _tear_down() {
   return 0
 }
 

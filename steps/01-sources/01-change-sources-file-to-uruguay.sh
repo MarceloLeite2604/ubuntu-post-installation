@@ -2,15 +2,15 @@
 
 _description="Changing APT sources to Uruguay."
 
-function _setUp() {
+function _set_up() {
   sources_file_path=/etc/apt/sources.list
 }
 
-function _verify() {
+function _check_step_is_necessary() {
   return 0
 }
 
-function _tearDown() {
+function _tear_down() {
   unset source_file_path
 }
 
