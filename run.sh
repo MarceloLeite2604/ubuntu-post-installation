@@ -35,21 +35,30 @@ function _run_script() {
 
     _setUp;
 
-    if [[ _verify -ne 0 ]];
+    if _verify; [[ $? -ne 0 ]];
     then
+        echo "[$script] Skipped (no changes are necessary)";
         _tearDown;
         return 0;
     fi;
 
     echo "[$script] $_description";
+
     _execute;
     local _execution_result=$?;
+
     _tearDown;
 
     if [[ $_execution_result -ne 0 ]];
     then
         >&2 echo "[$script] Failed";
         return 1;
+    fi;
+
+    if [[ $(type -t _manual_procedures) == function ]];
+    then
+        local content="$(_manual_procedures)";
+        _add_manual_procedures "[$script] $content";
     fi;
         
     echo "[$script] Complete.";
@@ -71,7 +80,6 @@ function run() {
             >&2 echo "Cancelling execution.";
             exit 1;
         fi;
-        exit 1;
     done;
 
     echo "Execution completed.";
@@ -83,4 +91,5 @@ then
     >&2 echo "Please chage to \"root\" or execute this script through \"sudo\" command.";
     exit 1;
 fi;
+
 run;

@@ -11,6 +11,21 @@ then
     readonly _scripts_root=$(dirname $0);
 fi;
 
+if [[ -z "$_temporary_directory" ]];
+then
+    readonly _temporary_directory="/tmp/ubuntu-post-installation";
+fi;
+
+if [[ -z "$_manual_procedures_file_name" ]];
+then
+    readonly _manual_procedures_file_name="manual-procedures.txt";
+fi;
+
+if [[ -z "$_manual_procedures_file_path" ]];
+then
+    readonly _manual_procedures_file_path="$_temporary_directory/$_manual_procedures_file_name";
+fi;
+
 readonly _history_file="$_scripts_root/.history";
 
 function _clear_history() {
@@ -48,6 +63,7 @@ function _clear_context() {
     unset -f _verify;
     unset -f _execute;
     unset -f _tearDown;
+    unset -f _manual_procedures;
 }
 
 function _check_context() {
@@ -97,6 +113,20 @@ function _load() {
     return 0;
 }
 
-function check_root() {
-    return [[ $(id -u) -eq 0 ]];
+function _create_manual_procedures_file() {
+    if [[ ! -f "$_manual_procedures_file_path" ]];
+    then
+        touch "$_manual_procedures_file_path";
+    fi;
+}
+
+function _clear_manual_procedures_file() {
+    create_manual_procedures_file;
+    echo -n "" >> "$_manual_procedures_file_path";
+}
+
+function _add_manual_procedures() {
+    local content="$1";
+
+    echo $content >> "$_manual_procedures_file_name";
 }
