@@ -5,7 +5,9 @@ if [[ -n "$_manual_procedures_sh" ]]; then
 fi
 _manual_procedures_sh=1
 
-source constants.sh
+_script_directory=$(dirname "${BASH_SOURCE[0]}")
+
+source "$_script_directory"/constants.sh
 
 if [[ -z "$_manual_procedures_file_name" ]]; then
   readonly _manual_procedures_file_name="manual-procedures.txt"

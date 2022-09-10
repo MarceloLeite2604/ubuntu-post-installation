@@ -5,25 +5,35 @@ if [[ -n "$_history_sh" ]]; then
 fi
 _history_sh=1
 
-source constants.sh
+_script_directory=$(dirname "${BASH_SOURCE[0]}")
+
+source "$_script_directory"/constants.sh
 
 if [[ -z "$_history_file" ]]; then
   readonly _history_file="$_temporary_directory/.history"
 fi
 
+function _create_history_file() {
+  if [[ ! -f "$_history_file" ]]; then
+    mkdir -p "$_temporary_directory";
+    touch "$_history_file"
+  fi;
+}
+
 function _clear_history() {
+  _create_history_file
   echo "Clearing execution history."
   echo -n "" >"$_history_file"
 }
 
 function _add_history() {
-  local script="$1"
+  local step_script="$1"
   local result="$2"
-  echo "$script $result" >>"$_history_file"
+  echo "$step_script $result" >>"$_history_file"
 }
 
 function _retrieve_history() {
-  local script="$1"
+  local step_script="$1"
 
   if [[ ! -f $_history_file ]]; then
     touch "$_history_file"
@@ -31,7 +41,7 @@ function _retrieve_history() {
   fi
 
   local content
-  content=$(grep "$script" "$_history_file")
+  content=$(grep "$step_script" "$_history_file")
 
   if [ -z "$content" ]; then
     return 2

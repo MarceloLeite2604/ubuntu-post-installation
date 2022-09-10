@@ -1,5 +1,9 @@
 #!/bin/bash
 
+if [[ $UPI_DEBUG -eq 0 ]]; then
+  set -x
+fi
+
 if [[ -n "$_step_sh" ]]; then
   return
 fi
@@ -29,6 +33,9 @@ function _check_step_was_previously_executed() {
     echo "$message_prefix Retrying"
     return 1
     ;;
+  2)
+    return 1
+    ;;
   *)
     echo >&2 "$message_prefix Invalid code on execution history ($previous_execution). Step will be reexecuted."
     return 1
@@ -36,23 +43,31 @@ function _check_step_was_previously_executed() {
   esac
 }
 
+function _load() {
+  local step_script="$1"
+
+  if [[ ! -f "$step_script" ]]; then
+    echo >&2 "Could not find script \"$step_script\"."
+    return 1
+  fi
+
+  # shellcheck source=/dev/null
+  source "$step_script"
+  return 0
+}
+
 function _execute_step() {
   local script_location="$1"
   local message_prefix="[$script_location]"
 
-  _check_step_was_previously_executed "$script_location" || return 0
-
-  # _clear_context
+  _check_step_was_previously_executed "$script_location" && return 0
 
   _load "$script_location" || return 1
 
   _check_context || return 1
 
-  _set_up
-
   if ! _check_step_is_necessary; then
     echo "$message_prefix Skipped (no changes are necessary)"
-    _tearDown
     return 0
   fi
 
@@ -61,8 +76,6 @@ function _execute_step() {
 
   _execute
   local _execution_result=$?
-
-  _tearDown
 
   if [[ $_execution_result -ne 0 ]]; then
     echo >&2 "$message_prefix Failed"
@@ -80,3 +93,7 @@ function _execute_step() {
 }
 
 _execute_step "$1"
+
+if [[ $UPI_DEBUG -eq 0 ]]; then
+  set +x
+fi

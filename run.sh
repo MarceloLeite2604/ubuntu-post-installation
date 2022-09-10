@@ -6,44 +6,29 @@ if [[ $(id -u) -ne 0 || -z "$USERNAME" ]]; then
   exit 1
 fi
 
-_debug=1
-_reset_execution=1
+_root_directory=$(dirname "${BASH_SCRIPT[0]}")
+readonly _root_directory
 
-while getopts dr flag; do
-  case $flag in
-  d)
-    _debug=0
-    ;;
-  r)
-    _reset_execution=0
-    ;;
-  *)
-    echo >&2 "Invalid flag: $flag"
-    exit 1
-    ;;
-  esac
-done
+source "$_root_directory"/functions/arguments.sh
 
-if [[ $_debug -eq 0 ]]; then
+_check_arguments "$@"
+
+if [[ $UPI_DEBUG -eq 0 ]]; then
   set -x
 fi
-
-_root_directory=$(dirname "$0")
-readonly _root_directory
 
 for source_file in "$_root_directory"/functions/*.sh; do
   # shellcheck source=/dev/null
   source "$source_file"
 done
 
-if [[ $_reset_execution -eq 0 ]]; then
+if [[ $UPI_RESET_EXECUTION -eq 0 ]]; then
   _clear_history
   _clear_manual_procedures_file
 fi
 
 function _search_step_scripts() {
-  # TODO Check regex
-  find "$_root_directory" -type f -regex ".*/steps/[0-9]+-[A-z0-9-]+\.sh" | sort | xargs echo
+  find "$_root_directory" -type f -regex "\./steps/.*/[0-9]+-[A-z0-9-]+\.sh" | sort | xargs echo
 }
 
 function _print_manual_procedures() {
@@ -58,7 +43,6 @@ function _print_manual_procedures() {
 
 function _run() {
   for step_script in $(_search_step_scripts); do
-    #_run_script "$script"
     bash step.sh "$step_script"
     _result=$?
     _add_history "$step_script" $_result
@@ -75,6 +59,6 @@ function _run() {
 
 _run
 
-if [[ $_debug -eq 0 ]]; then
+if [[ $UPI_DEBUG -eq 0 ]]; then
   set +x
 fi

@@ -2,13 +2,7 @@
 
 _description="Enable dark mode"
 
-function _set_up() {
-  config_file_path=$HOME/.config/gtk-4.0/settings.ini
-}
-
-function _tear_down() {
-  unset config_file_path
-}
+config_file_path=$HOME/.config/gtk-4.0/settings.ini
 
 function _check_step_is_necessary() {
   if [[ ! -f $config_file_path ]]; then
