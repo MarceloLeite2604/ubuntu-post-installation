@@ -1,6 +1,6 @@
 #!/bin/bash
 
-_description="Enable dark mode"
+_description="Enabling dark mode"
 
 config_file_path=$HOME/.config/gtk-4.0/settings.ini
 

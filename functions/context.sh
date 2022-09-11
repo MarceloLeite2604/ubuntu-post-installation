@@ -5,19 +5,23 @@ if [[ -n "$_context_sh" ]]; then
 fi
 _context_sh=1
 
+_script_directory=$(dirname "${BASH_SOURCE[0]}")
+
+source "$_script_directory"/log.sh
+
 function _check_context() {
   if [[ -z "$_description" ]]; then
-    echo >&2 "\"_description\" variable is not set."
+    _log "\"_description\" variable is not set." "ERROR" "$_log_no_header"
     return 1
   fi
 
   if [[ $(type -t _check_step_is_necessary) != function ]]; then
-    echo >&2 "\"_check_step_is_necessary\" function is not set."
+    _log "\"_check_step_is_necessary\" function is not set." "ERROR" "$_log_no_header"
     return 1
   fi
 
   if [[ $(type -t _execute) != function ]]; then
-    echo >&2 "\"_execute\" function is not set."
+    _log "\"_execute\" function is not set." "ERROR" "$_log_no_header"
     return 1
   fi
 
@@ -28,7 +32,7 @@ function _load_context() {
   local script_location="$1"
 
   if [[ ! -f "$script_location" ]]; then
-    echo >&2 "Could not find script \"$script_location\"."
+    _log "Could not find script \"$script_location\"." "ERROR" "$_log_no_header"
     return 1
   fi
 

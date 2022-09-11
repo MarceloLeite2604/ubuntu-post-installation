@@ -8,6 +8,7 @@ _history_sh=1
 _script_directory=$(dirname "${BASH_SOURCE[0]}")
 
 source "$_script_directory"/constants.sh
+source "$_script_directory"/log.sh
 
 if [[ -z "$_history_file" ]]; then
   readonly _history_file="$_temporary_directory/.history"
@@ -22,7 +23,7 @@ function _create_history_file() {
 
 function _clear_history() {
   _create_history_file
-  echo "Clearing execution history."
+  _log "Clearing execution history." "INFO" "$_log_no_header"
   echo -n "" >"$_history_file"
 }
 
