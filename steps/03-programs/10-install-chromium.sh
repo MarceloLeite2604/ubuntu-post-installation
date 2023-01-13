@@ -1,10 +1,9 @@
 #!/bin/bash
 
-_description="Install Spotify."
+_description="Installing Chromium."
 
 function _check_step_is_necessary() {
-  snap list chromium >> /dev/null
-  return $?;
+  ! _find_snap_package "chromium"
 }
 
 function _execute() {

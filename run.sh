@@ -28,8 +28,11 @@ if [[ $UPI_RESET_EXECUTION -eq 0 ]]; then
   _clear_manual_procedures_file
 fi
 
+_create_history_file
+_create_cache_directory
+
 function _search_step_scripts() {
-  find "$_root_directory" -type f -regex "\./steps/.*/[0-9]+-[A-z0-9-]+\.sh" | sort | xargs echo
+  find "$_root_directory" -type f -regex "\./steps/.*/[0-9]+-[a-Z0-9-]+\.sh" | sort | xargs echo
 }
 
 function _print_manual_procedures() {

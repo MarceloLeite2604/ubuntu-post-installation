@@ -1,10 +1,9 @@
 #!/bin/bash
 
-_description="Install Spotify."
+_description="Installing Spotify."
 
 function _check_step_is_necessary() {
-  snap list spotify >> /dev/null
-  return $?;
+  ! _find_snap_package "spotify"
 }
 
 function _execute() {
