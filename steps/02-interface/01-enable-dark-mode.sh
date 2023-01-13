@@ -9,11 +9,7 @@ function _check_step_is_necessary() {
     return 0
   fi
 
-  if grep "gtk-application-prefer-dark-theme=1" "$config_file_path" >/dev/null; then
-    return 0
-  fi
-
-  return 0
+  [[ $(grep -c "gtk-application-prefer-dark-theme=1" "$config_file_path") -eq 0 ]];
 }
 
 function _execute() {
@@ -22,10 +18,10 @@ function _execute() {
     touch "$config_file_path"
   fi
 
-#   cat <<EOF >>"$config_file_path"
-# [Settings]
-# gtk-application-prefer-dark-theme=1
-# EOF
+  cat <<EOF >>"$config_file_path"
+[Settings]
+  gtk-application-prefer-dark-theme=1
+EOF
 }
 
 function _manual_procedures() {
