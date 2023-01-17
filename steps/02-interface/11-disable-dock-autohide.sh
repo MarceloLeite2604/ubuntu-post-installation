@@ -1,10 +1,10 @@
 #!/bin/bash
 
-_description="Show weekday on calendar"
+_description="Disable Dock autohide mode"
 
-schema="org.gnome.desktop.interface"
-key="clock-show-weekday"
-value="true"
+schema="org.gnome.shell.extensions.dash-to-dock"
+key="autohide"
+value="false"
 
 function _check_step_is_necessary() {
   _check_gsettings_key "$schema" "$key" "$value"

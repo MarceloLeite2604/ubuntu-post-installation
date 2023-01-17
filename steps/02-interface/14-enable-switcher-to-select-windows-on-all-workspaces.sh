@@ -1,10 +1,10 @@
 #!/bin/bash
 
-_description="Show weekday on calendar"
+_description="Enable switcher to select windows on all workspaces"
 
-schema="org.gnome.desktop.interface"
-key="clock-show-weekday"
-value="true"
+schema="org.gnome.shell.window-switcher"
+key="current-workspace-only"
+value="false"
 
 function _check_step_is_necessary() {
   _check_gsettings_key "$schema" "$key" "$value"
