@@ -6,9 +6,11 @@ fi
 _constants_sh=1
 
 if [[ -z "$_temporary_directory" ]]; then
-  readonly _temporary_directory="/tmp/ubuntu-post-installation"
+  _temporary_directory="/tmp/ubuntu-post-installation"
+  readonly  _temporary_directory;
 fi
 
 if [[ -z "$_cache_directory" ]]; then
-  readonly _cache_directory="$_temporary_directory/cache"
+  _cache_directory="$_temporary_directory/cache"
+  readonly _cache_directory;
 fi

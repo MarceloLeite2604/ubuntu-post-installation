@@ -1,20 +1,19 @@
 #!/bin/bash
 
+#!/bin/bash
+
 # Add your script description on this constant.
-_description=""
+_description="Install nvm."
 
 # Create a logic to verify if it is necessary to execute the scirpt.
 function _check_step_is_necessary() {
-  return 0
+  [[ ! -d ~/.nvm ]]
 }
 
 # Create the logic to implement the proper system modifications here.
 function _execute() {
-  return 0
-}
+  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash;
 
-# Add here additional procedures that must be done manually by the user.
-# This function can be deleted if there are no additional procedures.
-function _manual_procedures() {
-  echo -n ""
+  # shellcheck source=/dev/null
+  source ~/.bashrc
 }

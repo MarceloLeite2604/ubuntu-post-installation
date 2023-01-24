@@ -30,6 +30,7 @@ fi
 
 _create_history_file
 _create_cache_directory
+_create_checksum_file;
 
 function _search_step_scripts() {
   find "$_root_directory" -type f -regex "\./steps/.*/[0-9]+-[a-Z0-9-]+\.sh" | sort | xargs echo
@@ -46,7 +47,13 @@ function _print_manual_procedures() {
 }
 
 function _run() {
+
+  _save_monitored_files_state;
+
   for step_script in $(_search_step_scripts); do
+
+    _refresh_monitored_files;
+
     bash step.sh "$step_script"
     _result=$?
     _add_history "$step_script" $_result
@@ -66,3 +73,5 @@ _run
 if [[ $UPI_DEBUG -eq 0 ]]; then
   set +x
 fi
+
+_delete_checksum_file;
