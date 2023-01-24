@@ -52,7 +52,7 @@ function _run() {
 
   for step_script in $(_search_step_scripts); do
 
-    _refresh_monitored_files;
+    _reload_monitored_files;
 
     bash step.sh "$step_script"
     _result=$?
@@ -70,8 +70,8 @@ function _run() {
 
 _run
 
+_delete_checksum_file;
+
 if [[ $UPI_DEBUG -eq 0 ]]; then
   set +x
 fi
-
-_delete_checksum_file;

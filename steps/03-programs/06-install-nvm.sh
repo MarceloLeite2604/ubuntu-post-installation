@@ -12,8 +12,5 @@ function _check_step_is_necessary() {
 
 # Create the logic to implement the proper system modifications here.
 function _execute() {
-  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash;
-
-  # shellcheck source=/dev/null
-  source ~/.bashrc
+  sudo -Eu "$SUDO_USER" bash -c "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash";
 }
